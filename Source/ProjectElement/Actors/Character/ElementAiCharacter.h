@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "ElementCharacterBase.h"
 #include "Components/AIFSMComponent.h"
+#include "Components/World/SquadManagerComponent.h"
 #include "Interfaces/PoolInterface.h"
 #include "ElementAiCharacter.generated.h"
 
@@ -11,6 +12,25 @@ class AInteractableLootDrop;
 class UBehaviorTree;
 class AElementAIControllerBase;
 class UActorPool;
+
+UENUM(BlueprintType)
+enum class ECombatStyle : uint8
+{
+	CS_Melee UMETA(DisplayName = "Melee"),
+	CS_Ranged UMETA(DisplayName = "Ranged"),
+	Unassigned UMETA(DisplayName = "Unassigned")
+};
+
+UENUM(BlueprintType)
+enum class ERank : uint8
+{
+	R_Common UMETA(DisplayName = "Common"),
+	R_Uncommon UMETA(DisplayName = "Uncommon"),
+	R_Rare UMETA(DisplayName = "Rare"),
+	R_Epic UMETA(DisplayName = "Epic"),
+	R_Legendary UMETA(DisplayName = "Legendary"),
+	Unassigned UMETA(DisplayName = "Unassigned")
+};
 
 UCLASS(Abstract, ClassGroup=(Custom), Blueprintable, meta=(BlueprintSpawnableComponent))
 class PROJECTELEMENT_API AElementAiCharacter : public AElementCharacterBase, public IPoolInterface
@@ -44,6 +64,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	UAIFSMComponent* AIFSMComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
+	ECombatStyle CombatStyle = ECombatStyle::Unassigned;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Attributes")
+	ERank Rank = ERank::Unassigned;
 	
 protected:
 
@@ -55,6 +81,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Loot")
 	TArray<TSubclassOf<AInteractableLootDrop>> LootTable;
+
+private:
+	FSquadInfo* CurrentSquad = new FSquadInfo;
 	
 public:
 
@@ -77,6 +106,10 @@ public:
 
 	UFUNCTION()
 	void Cleanup();
+
+	// squad data
+	void SetCurrentSquad(FSquadInfo* NewSquad);
+	FSquadInfo* GetCurrentSquad() const;
 
 	AElementAIControllerBase* GetElementAIController() const {return AIController;};
 };

@@ -131,9 +131,6 @@ void AElementAiCharacter::SpawnLoot()
 			SpawnedLoot->MeshComponent->SetSimulatePhysics(true);
 
 			// TODO - Loot physics
-
-
-			
 		}
 	}
 }
@@ -146,4 +143,14 @@ void AElementAiCharacter::Cleanup()
 	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);
 	Destroy();
+}
+
+void AElementAiCharacter::SetCurrentSquad(FSquadInfo* NewSquad)
+{
+	CurrentSquad = NewSquad;
+}
+
+FSquadInfo* AElementAiCharacter::GetCurrentSquad() const
+{
+	return CurrentSquad;
 }
