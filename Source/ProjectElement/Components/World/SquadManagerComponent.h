@@ -19,10 +19,10 @@ struct FSquadInfo
 	AElementCharacterBase* SquadLeader;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Squad")
-	int32 CurrentSquadSize;
+	int32 CurrentSquadSize = 0;
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Squad")
-	int32 MaxSquadSize;
+	int32 MaxSquadSize = 5;
 
 	UPROPERTY()
 	bool IsEngaged = false;
@@ -60,16 +60,12 @@ class PROJECTELEMENT_API USquadManagerComponent : public UActorComponent
 public:	
 	USquadManagerComponent();
 
-protected:
-	UPROPERTY(BlueprintReadWrite, Category = "Squads")
-	TArray<FSquadInfo> Squads;
-
-public:
-	
 	void CreateSquad(AElementCharacterBase* Creator);
 	void AddMemberToSquad(AElementCharacterBase* Member, FSquadInfo& Squad) const;
 	void RemoveMemberFromSquad(AElementCharacterBase* Member, FSquadInfo& Squad) const;
 	void UpdateSquadLeadership(FSquadInfo& Squad) const;
 	AElementCharacterBase* FindHighestRankedMember(const FSquadInfo& Squad) const;
-
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Squads")
+	TArray<FSquadInfo> Squads;
 };

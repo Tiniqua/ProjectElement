@@ -37,11 +37,9 @@ public:
 
 	UFUNCTION()
 	void CharacterDied(AElementCharacterBase* InCharacterDied);
-
-protected:
+	
 	UPROPERTY()
 	ASquadManager* SquadManagerActor;
-
 };
 
 

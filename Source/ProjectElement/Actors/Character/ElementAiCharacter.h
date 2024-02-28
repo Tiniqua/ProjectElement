@@ -83,7 +83,7 @@ protected:
 	TArray<TSubclassOf<AInteractableLootDrop>> LootTable;
 
 private:
-	FSquadInfo* CurrentSquad = new FSquadInfo;
+	FSquadInfo* CurrentSquad = nullptr;
 
 	// ----------- BINDING USING ON REP TO UPDATE UI ----------------
 	UPROPERTY(ReplicatedUsing = OnRep_SquadID)

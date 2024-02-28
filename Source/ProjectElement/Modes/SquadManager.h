@@ -15,11 +15,13 @@ public:
 	ASquadManager();
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USquadManagerComponent* SquadManagerComponent;
+	
 	
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USquadManagerComponent* SquadManagerComponent;
 };

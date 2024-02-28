@@ -19,7 +19,7 @@ void USquadManagerComponent::AddMemberToSquad(AElementCharacterBase* Member, FSq
 {
 	// TODO - Maybe dont add members if engaged?
 	
-	if (Squad.CanAddMembers && Squad.CurrentSquadSize < Squad.MaxSquadSize)
+	if (Squad.CanAddMembers)
 	{
 		Squad.Members.Add(Member);
 		Squad.CurrentSquadSize++;
@@ -93,6 +93,10 @@ AElementCharacterBase* USquadManagerComponent::FindHighestRankedMember(const FSq
 	AElementCharacterBase* HighestRankedMember = nullptr;
 	ERank HighestRank = ERank::Unassigned;
 
+	if(Squad.Members.Num() == 0)
+	{
+		return nullptr;
+	}
 	for (AElementCharacterBase* Member : Squad.Members)
 	{
 		// Ensure the member is of type AElementAiCharacter
