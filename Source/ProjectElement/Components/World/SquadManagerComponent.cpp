@@ -17,6 +17,8 @@ void USquadManagerComponent::CreateSquad(AElementCharacterBase* Creator)
 
 void USquadManagerComponent::AddMemberToSquad(AElementCharacterBase* Member, FSquadInfo& Squad) const
 {
+	// TODO - Maybe dont add members if engaged?
+	
 	if (Squad.CanAddMembers && Squad.CurrentSquadSize < Squad.MaxSquadSize)
 	{
 		Squad.Members.Add(Member);
@@ -25,6 +27,9 @@ void USquadManagerComponent::AddMemberToSquad(AElementCharacterBase* Member, FSq
 		if (AElementAiCharacter* AiMember = Cast<AElementAiCharacter>(Member))
 		{
 			AiMember->SetCurrentSquad(&Squad);
+			
+			const int SquadIndex = Squads.Find(Squad);
+			AiMember->SetSquadID(SquadIndex);
 		}
 		
 		UpdateSquadLeadership(Squad);
@@ -49,6 +54,7 @@ void USquadManagerComponent::RemoveMemberFromSquad(AElementCharacterBase* Member
 			if (AElementAiCharacter* AiMember = Cast<AElementAiCharacter>(Member))
 			{
 				AiMember->SetCurrentSquad(nullptr);
+				AiMember->SetSquadID(-1);
 			}
 
 			if (Squad.CurrentSquadSize < Squad.MaxSquadSize)

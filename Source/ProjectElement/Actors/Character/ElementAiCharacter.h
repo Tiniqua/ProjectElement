@@ -84,6 +84,10 @@ protected:
 
 private:
 	FSquadInfo* CurrentSquad = new FSquadInfo;
+
+	// ----------- BINDING USING ON REP TO UPDATE UI ----------------
+	UPROPERTY(ReplicatedUsing = OnRep_SquadID)
+	int SquadID = -1;
 	
 public:
 
@@ -110,6 +114,12 @@ public:
 	// squad data
 	void SetCurrentSquad(FSquadInfo* NewSquad);
 	FSquadInfo* GetCurrentSquad() const;
+	
+	void SetSquadID(int NewSquadID);
+	int GetSquadID() const;
+
+	UFUNCTION()
+	static void OnRep_SquadID();
 
 	AElementAIControllerBase* GetElementAIController() const {return AIController;};
 };

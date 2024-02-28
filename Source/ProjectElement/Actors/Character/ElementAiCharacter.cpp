@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/World/ActorPool.h"
+#include "Net/UnrealNetwork.h"
 
 AElementAiCharacter::AElementAiCharacter()
 {
@@ -24,6 +25,12 @@ void AElementAiCharacter::PostInitializeComponents()
 	{
 		UE_LOG(LogElementCharacter, Error, TEXT("%s: EnemyCharacter %s has no AIController, it will not function correctly!"), ANSI_TO_TCHAR(__FUNCTION__), *GetName());
 	}
+}
+
+void AElementAiCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AElementAiCharacter, SquadID);
 }
 
 void AElementAiCharacter::PoolInitialised_Implementation(UActorPool* InPool)
@@ -153,4 +160,20 @@ void AElementAiCharacter::SetCurrentSquad(FSquadInfo* NewSquad)
 FSquadInfo* AElementAiCharacter::GetCurrentSquad() const
 {
 	return CurrentSquad;
+}
+
+void AElementAiCharacter::SetSquadID(int NewSquadID)
+{
+	SquadID = NewSquadID;
+}
+
+int AElementAiCharacter::GetSquadID() const
+{
+	return SquadID;
+}
+
+void AElementAiCharacter::OnRep_SquadID()
+{
+	// TODO - UPDATE UI ABOVE AI IN WIDGET SO WE CAN VISUALISE WHICH SQUAD THEY ARE IN
+	// EITHER RANDOM ICON SELECTED BASED ON SORTED INDEX AND ID OR JUST DISPLAY ID AS NUM NEXT TO HEALTHBAR
 }
