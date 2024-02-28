@@ -7,6 +7,7 @@
 
 class USpawnManager;
 class UActorPool;
+class ASquadManager;
 class AElementCharacterBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FElementGameEvent);
@@ -36,6 +37,11 @@ public:
 
 	UFUNCTION()
 	void CharacterDied(AElementCharacterBase* InCharacterDied);
+
+protected:
+	UPROPERTY()
+	ASquadManager* SquadManagerActor;
+
 };
 
 

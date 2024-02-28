@@ -7,6 +7,7 @@
 #include "Interfaces/PoolInterface.h"
 #include "ElementAiCharacter.generated.h"
 
+class AInteractableLootDrop;
 class UBehaviorTree;
 class AElementAIControllerBase;
 class UActorPool;
@@ -51,6 +52,9 @@ protected:
 
 	UPROPERTY(Transient)
 	UActorPool* OwningPool = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Loot")
+	TArray<TSubclassOf<AInteractableLootDrop>> LootTable;
 	
 public:
 
@@ -67,6 +71,9 @@ public:
 
 	/** Handle enemy death event. */
 	virtual void OnDeath() override;
+
+	// TODO - From datatable or archetype data?
+	void SpawnLoot();
 
 	UFUNCTION()
 	void Cleanup();

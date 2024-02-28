@@ -22,7 +22,8 @@ public class ProjectElement : ModuleRules
 			"AIModule",
 			"Niagara",
 			"UMG",
-			"EOSCore"
+			"EOSCore",
+			"TypeToolbox"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] 
@@ -32,7 +33,8 @@ public class ProjectElement : ModuleRules
 			"OnlineSubsystem",
 			"OnlineSubsystemUtils",
 			"EOSCore",
-			"Voice"
+			"Voice", 
+			"TypeToolbox"
 		});
 		
 		// AI modules

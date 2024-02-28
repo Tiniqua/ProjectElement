@@ -250,7 +250,10 @@ void AElementPlayerControllerBase::ActivateCurrentAbility() const
 	}
 	else
 	{
-		CurrentAbility->StartAbility();
+		if(!CurrentAbility->IsAbilityOnCooldown)
+		{
+			CurrentAbility->StartAbility();
+		}
 	}
 }
 

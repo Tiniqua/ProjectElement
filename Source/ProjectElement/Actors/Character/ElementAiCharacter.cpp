@@ -2,6 +2,7 @@
 #include "ElementAiCharacter.h"
 #include "ElementCharacter.h"
 #include "Actors/Controllers/ElementAIControllerBase.h"
+#include "Actors/Misc/InteractableLootDrop.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/World/ActorPool.h"
@@ -72,6 +73,8 @@ void AElementAiCharacter::OnDeath()
 		CharacterMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		CharacterMesh->SetSimulatePhysics(true);
 	}
+	
+	//GetCapsuleComponent()->SetCapsuleHalfHeight(0);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	if (AIController)
@@ -97,6 +100,42 @@ void AElementAiCharacter::OnDeath()
 	FTimerDelegate FallbackDeathDelegate;
 	FallbackDeathDelegate.BindUFunction(this, "Cleanup", false);
 	GetWorld()->GetTimerManager().SetTimer(FallbackDeathHandle, FallbackDeathDelegate, DeathDespawnTime, false, DeathDespawnTime);
+
+	SpawnLoot();
+}
+
+void AElementAiCharacter::SpawnLoot()
+{
+	if (LootTable.Num() == 0)
+	{
+		// If the loot table is empty, there's no loot to spawn
+		return;
+	}
+	
+	const int32 NumLootDrops = FMath::RandRange(3, 10);
+	for (int32 i = 0; i < NumLootDrops; i++)
+	{
+		const int32 RandomIndex = FMath::RandRange(0, LootTable.Num() - 1);
+		// Assuming LootArray is an array of loot item classes (e.g., TSubclassOf<AInteractableLootDrop>)
+
+		if (AInteractableLootDrop* SpawnedLoot = GetWorld()->SpawnActor<AInteractableLootDrop>(LootTable[RandomIndex]))
+		{
+			FVector SpawnLocation = GetActorLocation();
+			SpawnLocation.Z += GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+			// Apply a random spawn offset to the loot drop
+			FVector SpawnOffset = FVector(FMath::FRandRange(-100.0f, 100.0f), FMath::FRandRange(-100.0f, 100.0f), 0.0f);
+			SpawnedLoot->SetActorLocation(SpawnLocation + SpawnOffset);
+
+			SpawnedLoot->MeshComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			SpawnedLoot->MeshComponent->SetSimulatePhysics(true);
+
+			// TODO - Loot physics
+
+
+			
+		}
+	}
 }
 
 // TODO - Temp until pooling setup
